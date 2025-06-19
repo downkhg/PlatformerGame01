@@ -1,5 +1,7 @@
 ﻿namespace ConsoleApp
 {
+   
+
     internal class Program
     {
         static void Main(string[] args)
@@ -14,8 +16,11 @@
             //AttackCritcalWhile();
             //MonsterListMain();
             //PlayerBattleMain();
-            MonsterSelectMain();
+            //MonsterSelectMain();
+            RPGPlayer.ClassPlayerBattleMain();
         }
+
+       
 
         static int Add(int a, int b)//10,20
         {
