@@ -17,7 +17,8 @@
             //MonsterListMain();
             //PlayerBattleMain();
             //MonsterSelectMain();
-            RPGPlayer.ClassPlayerBattleMain();
+            //RPGPlayer.ClassPlayerBattleMain();
+            RPGPlayer.SelectFieldBattleMain();
         }
 
        
