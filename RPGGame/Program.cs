@@ -18,12 +18,12 @@ namespace RPGGame
 
         int nLv;
 
-        public Player(string name, int hp = 100, int atk = 10)//생성자: 클래스가 생성시 호출되는 함수.
+        public Player(string name, int hp = 100, int atk = 10, int exp = 100)//생성자: 클래스가 생성시 호출되는 함수.
         {
             Name = name;
             nAtk = atk;
             nHP = hp;
-            nExp = 0;
+            nExp = exp;
             nMaxExp = 100;
             nMaxHP = hp;
             nLv = 1;
@@ -51,10 +51,6 @@ namespace RPGGame
         public void StillExp(Player target)
         {
             this.nExp += target.nExp;
-            if(this.nExp >= this.nMaxExp) // 0 <= 100 -> T // 0 >= 100 -> F
-            {
-               
-            }
         }
 
         public bool LvUpCheck()
@@ -65,6 +61,7 @@ namespace RPGGame
                 nAtk += 5;
                 nHP += 5;
                 nMaxHP += 5;
+                nExp = 0;
                 Console.WriteLine("LvUp[" + nLv + "]:" + this.nExp + "/" + this.nMaxExp);
                 return true;
             }
@@ -76,10 +73,10 @@ namespace RPGGame
             nHP = nMaxHP;
         }
 
-        public void Display(string msg = "")
+        public void Display()
         {
-            Console.WriteLine(msg);
             Console.WriteLine(Name + " Atk/HP:" + this.nAtk + "/" + this.nHP);
+            Console.WriteLine(Name + " Lv/Exp:" + this.nLv + "(" + this.nExp +"/" + this.nMaxExp +")");
         }
     }
 
