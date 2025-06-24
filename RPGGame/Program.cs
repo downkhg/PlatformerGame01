@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,18 @@ namespace RPGGame
         int nMaxExp;
 
         int nLv;
+
+        List<Player> listMonsters = new List<Player>();
+
+        public void GetMonster(Player target)
+        {
+            listMonsters.Add(target);
+        }
+
+        public Player ThrowMonster(string name)
+        {
+            return listMonsters.Find(monter => monter.Name == name);
+        }
 
         public Player(string name, int hp = 100, int atk = 10, int exp = 100)//생성자: 클래스가 생성시 호출되는 함수.
         {
@@ -68,7 +81,7 @@ namespace RPGGame
             return false;
         }
 
-        public void Recovery()
+         public void Recovery()
         {
             nHP = nMaxHP;
         }
@@ -115,8 +128,11 @@ namespace RPGGame
                     Console.WriteLine("Monster Death!");
                     player.StillExp(monster);
                     player.LvUpCheck();
+                    player.GetMonster(monster); 
                 }
             }
+
+            monster.Recovery();
         }
 
         public static void MonsterSelectMain()
@@ -134,47 +150,67 @@ namespace RPGGame
             Player player = new Player(strPlayerName,nPlayerHP, nPlayerAtk); //플레이어생성: 플레이어의 이름을 "Player"로 생성하고, 체력과 공격력을 각각 20/10으로 설정한다.
             Player monster = null; //싸울몬스터: 현재는 싸울 몬스터가 없다.
 
-            Console.WriteLine("이동 할 장소를 입력하세요.(평원,무덤,던전,계곡)");
-
-            string strInput = Console.ReadLine();
-
-            int nMonsterAtk = 10;
-            int nMonsterHP = 100;
-            string strMonster = "none";
-
-            switch (strInput)
+            while (true)
             {
-                case "평원":
-                    Console.WriteLine("슬라임이 출연합니다.");
-                    strMonster = "슬라임";
-                    nMonsterAtk = 5;
-                    nMonsterHP = 20;
-                    break;
-                case "무덤":
-                    Console.WriteLine("스켈레톤 출연합니다.");
-                    strMonster = "스켈레톤";
-                    nMonsterAtk = 10;
-                    nMonsterHP = 30;
-                    break;
-                case "던전":
-                    Console.WriteLine("좀비 출연 합니다.");
-                    strMonster = "좀비";
-                    nMonsterAtk = 20;
-                    nMonsterHP = 50;
-                    break;
-                case "계곡":
-                    strMonster = "드래곤";
-                    Console.WriteLine("드래곤이 출연 합니다.");
-                    nMonsterAtk = 50;
-                    nMonsterHP = 200;
-                    break;
-                default:
-                    Console.WriteLine("장소를 잘못입력했습니다.");
-                    break;
-            }
+                Console.WriteLine("이동 할 장소를 입력하세요.(평원,무덤,던전,계곡)");
 
-            monster = new Player(strMonster, nMonsterHP, nMonsterAtk);
-            BattleMain(player, monster);
+                string strInput = Console.ReadLine();
+
+                int nMonsterAtk = 10;
+                int nMonsterHP = 100;
+                string strMonster = "none";
+
+                switch (strInput)
+                {
+                    case "평원":
+                        Console.WriteLine("슬라임이 출연합니다.");
+                        strMonster = "슬라임";
+                        nMonsterAtk = 5;
+                        nMonsterHP = 20;
+                        break;
+                    case "무덤":
+                        Console.WriteLine("스켈레톤 출연합니다.");
+                        strMonster = "스켈레톤";
+                        nMonsterAtk = 10;
+                        nMonsterHP = 30;
+                        break;
+                    case "던전":
+                        Console.WriteLine("좀비 출연 합니다.");
+                        strMonster = "좀비";
+                        nMonsterAtk = 20;
+                        nMonsterHP = 50;
+                        break;
+                    case "계곡":
+                        strMonster = "드래곤";
+                        Console.WriteLine("드래곤이 출연 합니다.");
+                        nMonsterAtk = 50;
+                        nMonsterHP = 200;
+                        break;
+                    default:
+                        Console.WriteLine("장소를 잘못입력했습니다.");
+                        break;
+                }
+
+                Player myMonster = player.ThrowMonster("슬라임");
+
+                monster = new Player(strMonster, nMonsterHP, nMonsterAtk);
+
+                if (myMonster != null)
+                {
+                    myMonster.Display();
+
+                    BattleMain(myMonster, monster);
+                }
+                else
+                    BattleMain(player, monster);
+
+                if (player.Death())
+                {
+                    Console.WriteLine("GameOver");
+                    break ;
+                }
+                   
+            }
         }
 
 
