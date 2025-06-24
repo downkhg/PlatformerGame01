@@ -11,12 +11,22 @@ namespace RPGGame
         public string Name { get; set; }
         int nAtk;
         int nHP;
+        int nMaxHP;
 
-        public Player(string name, int hp = 100, int atk = 10)
+        int nExp;
+        int nMaxExp;
+
+        int nLv;
+
+        public Player(string name, int hp = 100, int atk = 10)//생성자: 클래스가 생성시 호출되는 함수.
         {
             Name = name;
             nAtk = atk;
             nHP = hp;
+            nExp = 0;
+            nMaxExp = 100;
+            nMaxHP = hp;
+            nLv = 1;
         }
 
         public void Attack(Player target)
@@ -36,11 +46,34 @@ namespace RPGGame
         //데이터: 플레이어의 경험치, 몬스터의 경험치
         //알고리즘: 몬스터가 사망하면 플레어가 몬스터의 경험치를 가져온다.
         //렙업한다. 만약 경험치가 최대 경험치가되면 
-        //데이터: 경험치,렙업,최대 경험치
+        //데이터: 경험치,레벨,최대 경험치
         //알고리즘: 만약 경험치가 최대경험치보다 크다면, 레벨이 1 오른다.
         public void StillExp(Player target)
         {
+            this.nExp += target.nExp;
+            if(this.nExp >= this.nMaxExp) // 0 <= 100 -> T // 0 >= 100 -> F
+            {
+               
+            }
+        }
 
+        public bool LvUpCheck()
+        {
+            if (this.nExp >= this.nMaxExp) // 0 <= 100 -> T // 0 >= 100 -> F
+            {
+                nLv++;
+                nAtk += 5;
+                nHP += 5;
+                nMaxHP += 5;
+                Console.WriteLine("LvUp[" + nLv + "]:" + this.nExp + "/" + this.nMaxExp);
+                return true;
+            }
+            return false;
+        }
+
+        public void Recovery()
+        {
+            nHP = nMaxHP;
         }
 
         public void Display(string msg = "")
@@ -81,7 +114,11 @@ namespace RPGGame
                     monster.Display();
                 }
                 else
+                {
                     Console.WriteLine("Monster Death!");
+                    player.StillExp(monster);
+                    player.LvUpCheck();
+                }
             }
         }
 
