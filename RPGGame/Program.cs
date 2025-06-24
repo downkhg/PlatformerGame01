@@ -79,7 +79,6 @@ namespace RPGGame
                     monster.Attack(player);
                     player.Display();
                     monster.Display();
-
                 }
                 else
                     Console.WriteLine("Monster Death!");
@@ -88,6 +87,19 @@ namespace RPGGame
 
         public static void MonsterSelectMain()
         {
+            int nPlayerAtk;
+            int nPlayerHP;
+            string strPlayerName;
+            Console.WriteLine("플레이어의 이름을 설정하세요.");
+            strPlayerName = Console.ReadLine();
+            Console.WriteLine("플레이어의 공격력을 입력하세요.");
+            nPlayerAtk = int.Parse(Console.ReadLine());
+            Console.WriteLine("플레이어의 체력을 입력하세요.");
+            nPlayerHP = int.Parse(Console.ReadLine());
+
+            Player player = new Player(strPlayerName,nPlayerHP, nPlayerAtk); //플레이어생성: 플레이어의 이름을 "Player"로 생성하고, 체력과 공격력을 각각 20/10으로 설정한다.
+            Player monster = null; //싸울몬스터: 현재는 싸울 몬스터가 없다.
+
             Console.WriteLine("이동 할 장소를 입력하세요.(평원,무덤,던전,계곡)");
 
             string strInput = Console.ReadLine();
@@ -127,15 +139,14 @@ namespace RPGGame
                     break;
             }
 
-            Player player = new Player("Player", 20, 10);
-            Player monster = new Player(strMonster, nMonsterHP, nMonsterHP);
-
+            monster = new Player(strMonster, nMonsterHP, nMonsterAtk);
             BattleMain(player, monster);
         }
 
 
         static void Main(string[] args)
         {
+            MonsterSelectMain();
         }
     }
 }
