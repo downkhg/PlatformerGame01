@@ -17,4 +17,12 @@ public class Opssum : MonoBehaviour
     {
         transform.position += Vector3.left * speed * Time.deltaTime;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "player")
+        {
+            Destroy(collision.gameObject);
+        }
+    }
 }
